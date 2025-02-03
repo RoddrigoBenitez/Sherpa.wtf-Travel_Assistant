@@ -4,7 +4,8 @@
   "description": "Travel-Assistant-API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/RoddrigoBenitez/Sherpa.wtf-Travel_Assistant/issues"
   },
-  "homepage": "https://github.com/RoddrigoBenitez/Sherpa.wtf-Travel_Assistant#readme"
+  "homepage": "https://github.com/RoddrigoBenitez/Sherpa.wtf-Travel_Assistant#readme",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
 }
