@@ -18,10 +18,15 @@
   },
   "homepage": "https://github.com/RoddrigoBenitez/Sherpa.wtf-Travel_Assistant#readme",
   "dependencies": {
+    "@langchain/community": "^0.3.28",
+    "@langchain/core": "^0.3.37",
+    "@langchain/langgraph": "^0.2.44",
+    "@langchain/openai": "^0.4.2",
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "nodemon": "^3.1.9",
+    "openai": "^4.82.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
