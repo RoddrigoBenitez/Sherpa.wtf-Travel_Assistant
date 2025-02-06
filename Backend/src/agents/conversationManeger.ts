@@ -1,43 +1,62 @@
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
+import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { MemorySaver } from "@langchain/langgraph";
-import { HumanMessage } from "@langchain/core/messages";
+import { HumanMessage, AIMessage, SystemMessage } from "@langchain/core/messages";
 import dotenv from "dotenv"
+import { weatherTool } from "./weatherTool";
+import { hotelTool } from "./hotelsTool";
+
 
 dotenv.config()
 
-const agentTools = [new TavilySearchResults({ maxResults: 3 })];
+
 const agentModel = new ChatOpenAI({ 
-    model: "gpt-4o-mini", 
-    temperature: 0.3,
-    
+  model: "gpt-4o-mini", 
+  temperature: 0.3,
+  
 });
 
 const agentCheckpointer = new MemorySaver();
+
+
+const tavily = [new TavilySearchResults({ maxResults: 3 })];
+const agentTools = [weatherTool, hotelTool];
+const toolNode = new ToolNode(agentTools);
+
 const destinationAgent = createReactAgent({
   llm: agentModel,
-  tools: agentTools,
+  tools: toolNode,
   checkpointSaver: agentCheckpointer,
 });
 
-
+//const conversationHistory: (HumanMessage | AIMessage)[] = [];
 
 // Probar con una pregunta de ejemplo
 async function askAgent(question: string) {
-    setTimeout(async () => {
       try {
+        // Agregar el nuevo mensaje del usuario al historial
+      //conversationHistory.push(new HumanMessage(question));
+
         const response = await destinationAgent.invoke(
-           { messages: 
-             [new HumanMessage(question)] }, 
-          { configurable: { thread_id: "1" } }
+           { messages: [new HumanMessage(question)] },
+           { configurable: { thread_id: "1" } }
         );
-        console.log("Respuesta del agente:", response);
+        // Convertir respuesta en mensaje de IA y agregarlo al historial
+        // const aiResponse = new AIMessage(aiResponseText);
+        // conversationHistory.push(aiResponse);
+
+        console.log("Respuesta del agente:", response.messages[1].content);
       } catch (error) {
         console.error("Error en la API:", error);
       }
-    }, 1000); // 1 segundos de delay
   }
   
   // Pregunta de ejemplo
-  askAgent("¿cual es lugar mas popular de Buenos Aires?");
+  askAgent('Puedes buscarme un hotel en Madrid del 10 al 15 de abril?')
+  
+  
+  //export default askAgent
+
+  
