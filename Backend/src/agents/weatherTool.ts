@@ -1,14 +1,14 @@
 import { tool } from "@langchain/core/tools";
-import { string, z } from "zod";
+import { z } from "zod";
 import { weatherService } from "../services/weatherAPI/service";
 
 export const weatherTool = tool(
-    async ({ city }: { city: string })=>{
-        const weatherData = await weatherService.getWeather(city);
+  async ({ city }: { city: string }) => {
+    const weatherData = await weatherService.getWeather(city);
     if (weatherData.error) {
       throw new Error(weatherData.error);
     }
-    return `🌍 Ciudad: ${weatherData.ciudad}
+    return `Ciudad: ${weatherData.ciudad}
      Temperatura: ${weatherData.temperatura}°C
      Clima: ${weatherData.descripcion}
      Humedad: ${weatherData.humedad}%
@@ -20,5 +20,5 @@ export const weatherTool = tool(
     schema: z.object({
       city: z.string().describe("Nombre de la ciudad para consultar el clima"),
     }),
-    }
+  }
 )
