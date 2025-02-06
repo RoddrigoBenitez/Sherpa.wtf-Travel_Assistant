@@ -10,7 +10,7 @@ export const hotelTool = tool(
       throw new Error(hotelData.error || "No se encontraron hoteles disponibles.");
     }
 
-    return `🏨 Hoteles disponibles en ${city}:
+    return `Hoteles disponibles en ${city}:
      Check-in: ${checkin}
      Check-out: ${checkout}
      Información: ${hotelData}`;

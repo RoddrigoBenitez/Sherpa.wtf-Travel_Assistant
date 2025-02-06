@@ -1,1 +1,0 @@
-// aqui deberia genrar con lanGraph los estados del mensaje para luego pasarlos en 'message' en conversationManajer
