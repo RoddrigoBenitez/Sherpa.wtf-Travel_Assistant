@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class HotelService {
-  private baseUrl = "https://secure-supply-xml.booking.com/hotels/xml/reservationssummary";
+  private baseUrl = "https://supply-xml.booking.com";
 
   async searchHotels(city: string, checkin: string, checkout: string) {
     const apiKey = process.env.BOOKING_API_KEY;
