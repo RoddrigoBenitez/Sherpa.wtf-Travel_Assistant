@@ -1,6 +1,6 @@
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { MemorySaver } from "@langchain/langgraph";
-import { HumanMessage } from "@langchain/core/messages";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import { weatherTool } from "./weatherTool";
@@ -30,8 +30,11 @@ const destinationAgent = createReactAgent({
 // Probar con una pregunta de ejemplo
 async function askAgent(question: string) {
   try {
+    const systemPrompt = new SystemMessage({
+      content: "eres un asistente de viajes para ayudar al usuario a consultar sobre lugares con breve descripcion tambien puedes usar la tools para consultar el pronostico del lugar, no contestes a otros temas que no sean con respecto al viaje"
+    })
     const response = await destinationAgent.invoke(
-      { messages: [new HumanMessage(question)] },
+      { messages: [systemPrompt ,new HumanMessage(question)] },
       { configurable: { thread_id: "1", userId: 1 } }
     );
     const lastMessage = response.messages[response.messages.length - 1].content;
