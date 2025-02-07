@@ -8,17 +8,25 @@ export const weatherTool = tool(
     if (weatherData.error) {
       throw new Error(weatherData.error);
     }
+
+    // Formatear el pronóstico de los próximos días
+    let forecastString = "\nPronóstico extendido:\n";
+    for (const [date, info] of Object.entries(weatherData.pronostico!)) {
+      forecastString += `- ${date}: ${info.temperatura}°C, ${info.descripcion}, Humedad: ${info.humedad}%, Viento: ${info.viento} km/h\n`;
+    }
+
     return `Ciudad: ${weatherData.ciudad}
      Temperatura: ${weatherData.temperatura}°C
      Clima: ${weatherData.descripcion}
      Humedad: ${weatherData.humedad}%
-     Viento: ${weatherData.viento} km/h`;
+     Viento: ${weatherData.viento} km/h
+     ${forecastString}`;
   },
   {
     name: "get_weather",
-    description: "Consulta el clima de una ciudad específica.",
+    description: "Consulta el clima actual y el pronóstico extendido de una ciudad.",
     schema: z.object({
       city: z.string().describe("Nombre de la ciudad para consultar el clima"),
     }),
   }
-)
+);
