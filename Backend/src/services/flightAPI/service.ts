@@ -2,10 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class FlightService {
-  // Endpoint para consultar ofertas de vuelos (en el entorno de testing)
-  private baseUrl = "https://test.api.amadeus.com/v2/shopping/flight-offers";
+  private baseUrl = "https://test.api.amadeus.com/v1/shopping/flight-destinations";
 
-  // Función para obtener el token de acceso de Amadeus
   async getAccessToken(): Promise<string> {
     const tokenUrl = "https://test.api.amadeus.com/v1/security/oauth2/token";
     const apiKey = process.env.AMADEUS_API_KEY;
@@ -20,6 +18,7 @@ class FlightService {
     body.append("client_id", apiKey);
     body.append("client_secret", apiSecret);
 
+    console.log("Obteniendo token de acceso...");
     const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
@@ -32,68 +31,41 @@ class FlightService {
       throw new Error(`Error al obtener token: ${response.statusText}`);
     }
     const data = await response.json();
+    console.log("Token obtenido:", data.access_token);
     return data.access_token;
   }
 
-  // Función para buscar ofertas de vuelos
-  async searchFlights(
-    origin: string,
-    destination: string,
-    departureDate: string,
-    departureTime: string = "10:00:00",
-    currency: string = "USD",
-    maxFlightOffers: number = 2,
-    cabin: string = "ECONOMY"
-  ) {
+  async searchFlightDestinations(origin: string, maxPrice?: string) {
     try {
       const accessToken = await this.getAccessToken();
 
-      // Construimos el cuerpo de la solicitud según la documentación
-      const requestBody = {
-        currencyCode: currency,
-        originDestinations: [
-          {
-            id: "1",
-            originLocationCode: origin,
-            destinationLocationCode: destination,
-            departureDateTimeRange: {
-              date: departureDate,
-              time: departureTime,
-            },
-          },
-        ],
-        travelers: [
-          {
-            id: "1",
-            travelerType: "ADULT",
-          },
-        ],
-        sources: ["GDS"],
-        searchCriteria: {
-          maxFlightOffers: maxFlightOffers,
-          flightFilters: {
-            cabinRestrictions: [
-              {
-                cabin: cabin,
-                coverage: "MOST_SEGMENTS",
-                originDestinationIds: ["1"],
-              },
-            ],
-          },
-        },
-      };
+      // Validar que el código IATA tiene 3 caracteres
+      if (!origin || origin.length !== 3) {
+        throw new Error(`Código IATA inválido: ${origin}`);
+      }
 
-      const response = await fetch(this.baseUrl, {
-        method: "POST",
+      // Construir la URL con los parámetros de consulta
+      let url = `${this.baseUrl}?origin=${encodeURIComponent(origin)}`;
+      if (maxPrice) {
+        url += `&maxPrice=${encodeURIComponent(maxPrice)}`;
+      }
+
+      console.log("URL de búsqueda de vuelos:", url);
+
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
       });
 
+      console.log("Respuesta de la API de vuelos:", response.status, response.statusText);
+
       if (!response.ok) {
-        throw new Error(`Error en la API de vuelos: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error("Cuerpo de error:", errorText);
+        throw new Error(`Error en la API de vuelos (${response.status}): ${errorText}`);
       }
 
       const data = await response.json();
@@ -101,7 +73,7 @@ class FlightService {
       return data;
     } catch (error) {
       console.error("Error al obtener vuelos:", error);
-      return { error: "No se pudo obtener la información de vuelos." };
+      return { error: error instanceof Error ? error.message : "Error desconocido." };
     }
   }
 }
