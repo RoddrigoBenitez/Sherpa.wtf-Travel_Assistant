@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-class FlightService {
-  private baseUrl = "https://test.api.amadeus.com/v1/shopping/flight-destinations";
+class HotelService {
+  // endpoint para ofertas de hoteles (v3) que requiere hotelIds(access limit por amadeus)
+  private baseUrl = "https://test.api.amadeus.com/v3/shopping/hotel-offers";
 
   async getAccessToken(): Promise<string> {
     const tokenUrl = "https://test.api.amadeus.com/v1/security/oauth2/token";
@@ -35,22 +36,26 @@ class FlightService {
     return data.access_token;
   }
 
-  async searchFlightDestinations(origin: string, maxPrice?: string) {
+  async searchHotels(
+    hotelIds: string,
+    checkin: string,
+    checkout: string,
+    adults: number = 1,
+    paymentPolicy: string = "NONE",
+    roomQuantity: number = 1
+  ) {
     try {
+      // Validar que la fecha de check-in no esté en el pasado
+      const now = new Date();
+      const checkinDate = new Date(checkin);
+      if (checkinDate < now) {
+        throw new Error("Fecha de check-in inválida: la fecha no puede estar en el pasado");
+      }
+
       const accessToken = await this.getAccessToken();
-
-      // Validar que el código IATA tiene 3 caracteres
-      if (!origin || origin.length !== 3) {
-        throw new Error(`Código IATA inválido: ${origin}`);
-      }
-
-      // Construir la URL con los parámetros de consulta
-      let url = `${this.baseUrl}?origin=${encodeURIComponent(origin)}`;
-      if (maxPrice) {
-        url += `&maxPrice=${encodeURIComponent(maxPrice)}`;
-      }
-
-      console.log("URL de búsqueda de vuelos:", url);
+      const url = `${this.baseUrl}?hotelIds=${encodeURIComponent(hotelIds)}&adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&paymentPolicy=${encodeURIComponent(paymentPolicy)}&roomQuantity=${roomQuantity}`;
+      
+      console.log("URL de búsqueda de hoteles:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -60,22 +65,19 @@ class FlightService {
         },
       });
 
-      console.log("Respuesta de la API de vuelos:", response.status, response.statusText);
-
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Cuerpo de error:", errorText);
-        throw new Error(`Error en la API de vuelos (${response.status}): ${errorText}`);
+        throw new Error(`Error en la API de hoteles: ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
-      console.log("data flight service:", data);
+      console.log("data hotels service:", data);
       return data;
     } catch (error) {
-      console.error("Error al obtener vuelos:", error);
-      return { error: error instanceof Error ? error.message : "Error desconocido." };
+      console.error("Error al obtener hoteles:", error);
+      return { error: error instanceof Error ? error.message : "No se pudo obtener la información de hoteles." };
     }
   }
 }
 
-export const flightService = new FlightService();
+export const hotelService = new HotelService();

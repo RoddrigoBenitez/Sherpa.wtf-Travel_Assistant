@@ -4,9 +4,10 @@ import { MemorySaver } from "@langchain/langgraph";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
-import { weatherTool } from "./weatherTool";
-import { hotelTool } from "./hotelsTool";
-import { flightTool } from "./flightTool";
+import { weatherTool } from "../tools/weatherTool";
+import { hotelTool } from "../tools/hotelsTool";
+import { flightTool } from "../tools/flightTool";
+import { hotelsByCityTool } from "../tools/hotelsCityTool";
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ const agentModel = new ChatOpenAI({
 });
 
 
-const agentTools = [weatherTool, hotelTool, flightTool];
+const agentTools = [weatherTool, hotelTool, flightTool, hotelsByCityTool];
 const toolNode = new ToolNode(agentTools);
 
 const agentCheckpointer = new MemorySaver();
