@@ -1,12 +1,10 @@
 import dotenv from "dotenv";
-
 dotenv.config();
 
-class HotelService {
-  // endpoint base para buscar ofertas de hoteles en Amadeus
-  private baseUrl = "https://test.api.amadeus.com/v3/shopping/hotel-offers";
+class HotelLocationService {
+  // endpoint para buscar hoteles por ciudad
+  private baseUrl = "http://test.api.amadeus.com/reference-data/locations/hotels/by-city";
 
-  // obtener el token de acceso
   async getAccessToken(): Promise<string> {
     const tokenUrl = "https://test.api.amadeus.com/v1/security/oauth2/token";
     const apiKey = process.env.AMADEUS_API_KEY;
@@ -36,11 +34,12 @@ class HotelService {
     return data.access_token;
   }
 
-  async searchHotels(city: string, checkin: string, checkout: string) {
+  // busca hoteles por ciudad (usando cityCode y un radio de búsqueda)
+  async searchHotelsByCity(cityCode: string, radius: number = 12) {
     try {
       const accessToken = await this.getAccessToken();
-      // Usamos "cityCode" como parámetro; en un caso real puede que necesites convertir el nombre de la ciudad a código.
-      const url = `${this.baseUrl}?cityCode=${encodeURIComponent(city)}&checkInDate=${checkin}&checkOutDate=${checkout}&adults=1`;
+      const url = `${this.baseUrl}?cityCode=${encodeURIComponent(cityCode)}&radius=${radius}`;
+      console.log("URL de búsqueda de hoteles por ciudad:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -51,17 +50,18 @@ class HotelService {
       });
 
       if (!response.ok) {
-        throw new Error(`Error en la API de hoteles: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`Error en la API de hoteles por ciudad: ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
-      console.log("data hotels service:", data);
+      console.log("data hoteles por ciudad:", data);
       return data;
     } catch (error) {
-      console.error("Error al obtener hoteles:", error);
-      return { error: "No se pudo obtener la información de hoteles." };
+      console.error("Error al buscar hoteles por ciudad:", error);
+      return { error: error instanceof Error ? error.message : "Error desconocido." };
     }
   }
 }
 
-export const hotelService = new HotelService();
+export const hotelLocationService = new HotelLocationService();
