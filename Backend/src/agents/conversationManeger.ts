@@ -6,6 +6,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
 import { weatherTool } from "./weatherTool";
 import { hotelTool } from "./hotelsTool";
+import { flightTool } from "./flightTool";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ const agentModel = new ChatOpenAI({
 });
 
 
-const agentTools = [weatherTool, hotelTool];
+const agentTools = [weatherTool, hotelTool, flightTool];
 const toolNode = new ToolNode(agentTools);
 
 const agentCheckpointer = new MemorySaver();
