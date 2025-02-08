@@ -1,13 +1,10 @@
 import dotenv from "dotenv";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { MemorySaver } from "@langchain/langgraph";
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
-import { weatherTool } from "../tools/weatherTool";
-import { hotelTool } from "../tools/hotelsTool";
-import { flightTool } from "../tools/flightTool";
-import { hotelsByCityTool } from "../tools/hotelsCityTool";
+import { flightTool } from "../tools/flightTool"; 
 
 dotenv.config();
 
@@ -17,7 +14,7 @@ const agentModel = new ChatOpenAI({
 });
 
 
-const agentTools = [weatherTool, hotelTool, flightTool, hotelsByCityTool];
+const agentTools = [flightTool];
 const toolNode = new ToolNode(agentTools);
 
 const agentCheckpointer = new MemorySaver();
@@ -31,13 +28,13 @@ const destinationAgent = createReactAgent({
 
 
 // Probar con una pregunta de ejemplo
-async function askAgent(question: string) {
+async function ask(question: string) {
   try {
     const systemPrompt = new SystemMessage({
-      content: "eres un asistente de viajes para ayudar al usuario a consultar sobre lugares con breve descripcion tambien puedes usar la tools para consultar el pronostico del lugar, no contestes a otros temas que no sean con respecto al viaje"
-    })
+        content: "eres un asistente de viajes para ayudar al usuario a consultar sobre vuelos con breve descripcion tambien puedes usar la tools para consultar"+
+        "no contestes a otros temas que no sean con respecto al viaje"    })
     const response = await destinationAgent.invoke(
-      { messages: [systemPrompt ,new HumanMessage(question)] },
+      { messages: [systemPrompt , new HumanMessage(question)] },
       { configurable: { thread_id: "1", userId: 1 } }
     );
     const lastMessage = response.messages[response.messages.length - 1].content;
@@ -49,4 +46,4 @@ async function askAgent(question: string) {
 }
 
 
-export default askAgent
+export default ask

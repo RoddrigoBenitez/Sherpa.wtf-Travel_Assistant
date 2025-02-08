@@ -45,7 +45,7 @@ class HotelService {
     roomQuantity: number = 1
   ) {
     try {
-      // Validar que la fecha de check-in no esté en el pasado
+      // valida la fecha de check-in q no esté en el pasado
       const now = new Date();
       const checkinDate = new Date(checkin);
       if (checkinDate < now) {
