@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import askAgent from "../../agents/conversationManeger";
+import askAgent from "../../agents/travelAgent";
 
 class ControllerAgent {
     async askQuestion(req: Request, res: Response) {
