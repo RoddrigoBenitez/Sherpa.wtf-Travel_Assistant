@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { Command, MessagesAnnotation } from "@langchain/langgraph";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 
@@ -16,11 +15,14 @@ export const makeAgentNode = (params: {
     ];
     const result = await params.agent.invoke({ messages });
     const lastContent = result.messages[result.messages.length - 1].content;
-    // Aquí simulamos una decisión de enrutamiento basada en palabras clave (podés mejorar esto)
+    
+    // Lógica de ruteo basada en palabras clave (puedes mejorarla)
     let goto = "__end__";
-    if (lastContent.toLowerCase().includes("travel")) goto = "travel_advisor"
+    if (lastContent.toLowerCase().includes("travel")) goto = "travel_advisor";
     else if (lastContent.toLowerCase().includes("hotel")) goto = "hotel_advisor";
     else if (lastContent.toLowerCase().includes("flight")) goto = "flight_advisor";
+    
+    // Crear el comando sin la propiedad metadata
     const command = new Command({
       goto,
       update: { messages: new HumanMessage({ content: lastContent, name: params.name }) },
