@@ -39,7 +39,6 @@ class HotelLocationService {
     try {
       const accessToken = await this.getAccessToken();
       const url = `${this.baseUrl}?cityCode=${encodeURIComponent(cityCode)}&radius=${radius}`;
-      console.log("URL de búsqueda de hoteles por ciudad:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -55,7 +54,6 @@ class HotelLocationService {
       }
 
       const data = await response.json();
-      console.log("data hoteles por ciudad:", data);
       return data;
     } catch (error) {
       console.error("Error al buscar hoteles por ciudad:", error);
