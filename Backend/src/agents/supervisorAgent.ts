@@ -2,9 +2,8 @@ import { z } from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { END } from "@langchain/langgraph";
-import { HumanMessage } from "@langchain/core/messages";
 
-const members = ["travel_advisor", "hotel_advisor", "flight_advisor", "recomend_advisor"] as const;
+const members = ["recomend_advisor", "travel_advisor", "hotel_advisor", "flight_advisor"] as const;
 const options = ["__end__", ...members];
 
 const systemPrompt =
@@ -14,7 +13,8 @@ const systemPrompt =
 
 const routingTool = {
   name: "route",
-  description: "Decide el próximo agente a utilizar.",
+  description: "Decide el próximo agente a utilizar."+
+  "o '__end__' si la consulta ya quedó resuelta.",
   schema: z.object({
     next: z.enum([END, ...members]),
   }),
