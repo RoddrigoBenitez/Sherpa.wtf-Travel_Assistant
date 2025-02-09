@@ -44,6 +44,8 @@ const flightAdvisorNode = makeAgentNode({
   agent: flightAgent,
 });
 
+export const agentCheckpointer = new MemorySaver();
+
 // Armar el grafo con los nodos definidos
 const workflow = new StateGraph(MessagesAnnotation)
   .addNode("recomend_advisor", recomendAdvisorNode, { ends: ["travel_advisor", "hotel_advisor", "flight_advisor", "__end__"] })
@@ -52,7 +54,7 @@ const workflow = new StateGraph(MessagesAnnotation)
   .addNode("flight_advisor", flightAdvisorNode, { ends: ["recomend_advisor", "travel_advisor", "hotel_advisor", "__end__"] })
   .addEdge("__start__", "recomend_advisor");
 
-const graph = workflow.compile();
+const graph = workflow.compile({ checkpointer: agentCheckpointer });
 
 // Función para invocar el grafo (orquestador) y retornar una respuesta final
 async function runGraph(question: string): Promise<string> {
@@ -68,6 +70,7 @@ async function runGraph(question: string): Promise<string> {
     { messages: [systemPrompt, initialMessage] },
     { configurable: { thread_id: "1", userId: 1 } }
   );
+
   
   const lastContent = finalState.messages[finalState.messages.length - 1].content;
   
