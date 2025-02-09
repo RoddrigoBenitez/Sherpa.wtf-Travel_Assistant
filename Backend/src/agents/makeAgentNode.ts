@@ -17,18 +17,7 @@ export const makeAgentNode = (params: {
     
     // Lógica de ruteo basada en palabras clave (puedes mejorarla)
     let goto = "__end__";
-// Si la respuesta menciona "clima" o "temperatura", se asigna travel_advisor
-if (lastContent.toLowerCase().includes("clima") || lastContent.toLowerCase().includes("temperatura")) {
-  goto = "travel_advisor";
-}
-// Si menciona "hotel" y no se detecta indicación de clima, se asigna hotel_advisor
-else if (lastContent.toLowerCase().includes("hotel")) {
-  goto = "hotel_advisor";
-}
-else if (lastContent.toLowerCase().includes("flight") || lastContent.toLowerCase().includes("vuelo")) {
-  goto = "flight_advisor";
-}
-
+    
 // Evitar ciclo infinito: si el nodo sugiere derivarse a sí mismo, forzamos el final.
 if (goto === params.name) {
   goto = "__end__";
