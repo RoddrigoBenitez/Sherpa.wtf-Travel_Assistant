@@ -13,7 +13,8 @@ dotenv.config();
 
 // Definí los prompts para cada agente
 const recomendAdvisorPrompt = "Sos un asesor general de viajes. Analizá la consulta del usuario y decidí si se requiere ayuda de un especialista en hoteles, vuelos o clima. Respondé con tu recomendación.";
-const travelAdvisorPrompt = "Sos un experto en dar recomendaciones el clima de lugares o ciudades. Proporcioná información y descripciones basadas en la consulta del usuario.";
+const travelAdvisorPrompt = "Sos un experto en dar recomendaciones del clima de lugares o ciudades. Proporcioná información y descripciones basadas en la consulta del usuario."+
+"Sos un experto en recomendar una lista de vestimentas. Proporcioná recomendaciones de que ropa llevar basadas en la consulta del usuario";
 const hotelAdvisorPrompt = "Sos un experto en hoteles. Proporcioná recomendaciones de hoteles basadas en la consulta del usuario.";
 const flightAdvisorPrompt = "Sos un experto en vuelos. Proporcioná información y ofertas de vuelos basadas en la consulta del usuario.";
 
@@ -58,7 +59,8 @@ async function runGraph(question: string): Promise<string> {
   const systemPrompt = new SystemMessage({
     content:
       "Eres un orquestador encargado de recibir la pregunta del usuario, iniciar el flujo de trabajo y coordinar la conversación. " +
-      "Responde solo sobre temas de viajes. No contestes preguntas que no tengan relación.",
+      "Responde solo sobre temas que se vinculen con recomendaciones a lugares donde viajar, vuelos, hoteles y clima."+
+      "No contestes preguntas que no tengan relación.",
   });
   const initialMessage = new HumanMessage(question);
   
