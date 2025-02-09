@@ -13,8 +13,8 @@ const systemPrompt =
 
 const routingTool = {
   name: "route",
-  description: "Decide el próximo agente a utilizar."+
-  "o '__end__' si la consulta ya quedó resuelta.",
+  description: "Decide el próximo agente a utilizar." +
+    "o '__end__' si la consulta ya quedó resuelta.",
   schema: z.object({
     next: z.enum([END, ...members]),
   }),

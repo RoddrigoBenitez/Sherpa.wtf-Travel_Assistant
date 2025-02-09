@@ -9,7 +9,7 @@ class WeatherService {
         }
 
         try {
-            // obtener coordenadas de la ciudad
+            // obtain city coordinates
             const url = `${apiUrl}?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric&lang=es`;
             const response = await fetch(url);
             if (!response.ok) {
@@ -18,13 +18,13 @@ class WeatherService {
 
             const data = await response.json();
 
-            // extrae coordenadas
+            // extracts coordinates
             const { coord, name } = data;
             if (!coord || !coord.lat || !coord.lon) {
                 return { error: "No se encontraron coordenadas para la ciudad." };
             }
 
-            // obtiene el pronóstico de 5 días
+            // get the 5-day forecast
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coord.lat}&lon=${coord.lon}&appid=${apiKey}&units=metric&lang=es`;
             const forecastResponse = await fetch(forecastUrl);
             if (!forecastResponse.ok) {
@@ -33,7 +33,7 @@ class WeatherService {
 
             const forecastData = await forecastResponse.json();
 
-            // Procesar la información (Agrupar por día)
+            // Process information (Group by day)
             const forecastByDay: Record<string, any> = {};
             forecastData.list.forEach((item: any) => {
                 const date = item.dt_txt.split(" ")[0]; // tomar solo la fecha (YYYY-MM-DD)

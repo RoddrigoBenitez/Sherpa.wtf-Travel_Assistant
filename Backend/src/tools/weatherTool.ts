@@ -9,7 +9,7 @@ export const weatherTool = tool(
       throw new Error(weatherData.error);
     }
 
-    // Formatear el pronóstico de los próximos días
+    // formatting the forecast for the next few days
     let forecastString = "\nPronóstico extendido:\n";
     for (const [date, info] of Object.entries(weatherData.pronostico!)) {
       forecastString += `- ${date}: ${info.temperatura}°C, ${info.descripcion}, Humedad: ${info.humedad}%, Viento: ${info.viento} km/h\n`;

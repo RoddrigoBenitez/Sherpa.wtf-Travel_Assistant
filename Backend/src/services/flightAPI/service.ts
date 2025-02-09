@@ -37,12 +37,12 @@ class FlightService {
     try {
       const accessToken = await this.getAccessToken();
 
-      // Validar que el código IATA tiene 3 caracteres
+      // validates that the IATA code is 3 characters long.
       if (!origin || origin.length !== 3) {
         throw new Error(`Código IATA inválido: ${origin}`);
       }
 
-      // Construir la URL con los parámetros de consulta
+      // build the URL with the query parameters
       let url = `${this.baseUrl}?origin=${encodeURIComponent(origin)}`;
       if (maxPrice) {
         url += `&maxPrice=${encodeURIComponent(maxPrice)}`;

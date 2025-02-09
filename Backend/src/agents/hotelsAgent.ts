@@ -26,4 +26,3 @@ const agentHotels = createReactAgent({
 
 
 export default agentHotels;
-
