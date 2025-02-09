@@ -1,4 +1,4 @@
-# Sherpa.wtf-Travel_Assistant# Sherpa.wtf Travel Assistant
+# Sherpa.wtf Travel Assistant
 
 **Sherpa** es un asistente de viajes multiagente desarrollado en **Node.js** y **TypeScript**. La aplicación está diseñada para ayudar a los usuarios a planificar viajes sin complicaciones, proporcionando recomendaciones sobre destinos, clima, vuelos y hoteles. La arquitectura se basa en un **orquestador**, un **supervisor** y varios **agentes especializados** que se comunican a través de un **grafo de estados**.
 
