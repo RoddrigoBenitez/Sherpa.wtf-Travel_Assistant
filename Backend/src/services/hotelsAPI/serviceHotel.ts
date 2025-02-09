@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class HotelService {
-  // endpoint para ofertas de hoteles (v3) que requiere hotelIds(access limit por amadeus)
+  // endpoint for hotel offers (v3) requiring hotelIds(access limit by amadeus)
   private baseUrl = "https://test.api.amadeus.com/v3/shopping/hotel-offers";
 
   async getAccessToken(): Promise<string> {
@@ -52,7 +52,7 @@ class HotelService {
 
       const accessToken = await this.getAccessToken();
       const url = `${this.baseUrl}?hotelIds=${encodeURIComponent(hotelIds)}&adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&paymentPolicy=${encodeURIComponent(paymentPolicy)}&roomQuantity=${roomQuantity}`;
-      
+
 
       const response = await fetch(url, {
         method: "GET",

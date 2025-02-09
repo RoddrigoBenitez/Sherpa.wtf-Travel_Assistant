@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatOpenAI } from "@langchain/openai";
-import { flightTool } from "../tools/flightTool"; 
+import { flightTool } from "../tools/flightTool";
 import { agentCheckpointer } from "./orchestrator";
 
 dotenv.config();
@@ -25,4 +25,3 @@ const agentFly = createReactAgent({
 
 
 export default agentFly
-

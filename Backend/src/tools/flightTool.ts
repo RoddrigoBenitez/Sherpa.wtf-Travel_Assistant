@@ -20,10 +20,10 @@ export const flightTool = tool(
         const departureDate = destination.departureDate || "N/A";
         const returnDate = destination.returnDate || "N/A";
         const priceTotal = destination.price?.total || "N/A";
-        result += `${index + 1}. 📍 Destino: ${dest}\n   🗓️ Fechas: ${departureDate} - ${returnDate}\n   💰 Precio: ${priceTotal} \n`;
+        result += `${index + 1}.  Destino: ${dest}\n   Fechas: ${departureDate} - ${returnDate}\n  Precio: ${priceTotal} \n`;
       });
     } else {
-      result += "❌ No se encontraron destinos.";
+      result += "No se encontraron destinos.";
     }
 
     return result;

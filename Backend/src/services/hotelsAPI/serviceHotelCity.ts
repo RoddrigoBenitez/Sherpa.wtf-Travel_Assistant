@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class HotelLocationService {
-  // endpoint para buscar hoteles por ciudad
+  // endpoint to search for hotels by city
   private baseUrl = "http://test.api.amadeus.com/reference-data/locations/hotels/by-city";
 
   async getAccessToken(): Promise<string> {
@@ -34,7 +34,7 @@ class HotelLocationService {
     return data.access_token;
   }
 
-  // busca hoteles por ciudad (usando cityCode y un radio de búsqueda)
+  // search for hotels by city (using cityCode and a search radius)
   async searchHotelsByCity(cityCode: string, radius: number = 12) {
     try {
       const accessToken = await this.getAccessToken();
