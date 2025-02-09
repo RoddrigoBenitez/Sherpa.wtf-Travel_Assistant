@@ -19,7 +19,6 @@ class HotelService {
     body.append("client_id", apiKey);
     body.append("client_secret", apiSecret);
 
-    console.log("Obteniendo token de acceso...");
     const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
@@ -32,7 +31,6 @@ class HotelService {
       throw new Error(`Error al obtener token: ${response.statusText}`);
     }
     const data = await response.json();
-    console.log("Token obtenido:", data.access_token);
     return data.access_token;
   }
 
@@ -55,7 +53,6 @@ class HotelService {
       const accessToken = await this.getAccessToken();
       const url = `${this.baseUrl}?hotelIds=${encodeURIComponent(hotelIds)}&adults=${adults}&checkInDate=${checkin}&checkOutDate=${checkout}&paymentPolicy=${encodeURIComponent(paymentPolicy)}&roomQuantity=${roomQuantity}`;
       
-      console.log("URL de búsqueda de hoteles:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -71,7 +68,6 @@ class HotelService {
       }
 
       const data = await response.json();
-      console.log("data hotels service:", data);
       return data;
     } catch (error) {
       console.error("Error al obtener hoteles:", error);

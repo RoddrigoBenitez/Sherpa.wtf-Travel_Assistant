@@ -4,7 +4,6 @@ import { hotelService } from "../services/hotelsAPI/serviceHotel";
 
 export const hotelTool = tool(
   async ({ hotelId, checkin, checkout }: { hotelId: string; checkin: string; checkout: string }) => {
-    console.log(`Consultando ofertas para el hotel ${hotelId} desde ${checkin} hasta ${checkout}...`);
     const hotelData = await hotelService.searchHotels(hotelId, checkin, checkout);
 
     if (hotelData.error) {
@@ -29,7 +28,6 @@ export const hotelTool = tool(
       result += "No se encontraron ofertas.";
     }
 
-    console.log("Resultado formateado:", result);
     return result;
   },
   {

@@ -4,7 +4,6 @@ import { hotelLocationService } from "../services/hotelsAPI/serviceHotelCity";
 
 export const hotelsByCityTool = tool(
   async ({ cityCode, radius }: { cityCode: string; radius?: number }) => {
-    console.log(`Buscando hoteles en la ciudad ${cityCode} con un radio de ${radius || 1} km...`);
     const hotelData = await hotelLocationService.searchHotelsByCity(cityCode, radius || 1);
 
     if (hotelData.error) {

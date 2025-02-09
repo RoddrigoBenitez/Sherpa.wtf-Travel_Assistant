@@ -18,7 +18,6 @@ class FlightService {
     body.append("client_id", apiKey);
     body.append("client_secret", apiSecret);
 
-    console.log("Obteniendo token de acceso...");
     const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
@@ -31,7 +30,6 @@ class FlightService {
       throw new Error(`Error al obtener token: ${response.statusText}`);
     }
     const data = await response.json();
-    console.log("Token obtenido:", data.access_token);
     return data.access_token;
   }
 
@@ -50,7 +48,6 @@ class FlightService {
         url += `&maxPrice=${encodeURIComponent(maxPrice)}`;
       }
 
-      console.log("URL de búsqueda de vuelos:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -60,7 +57,6 @@ class FlightService {
         },
       });
 
-      console.log("Respuesta de la API de vuelos:", response.status, response.statusText);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -69,7 +65,6 @@ class FlightService {
       }
 
       const data = await response.json();
-      console.log("data flight service:", data);
       return data;
     } catch (error) {
       console.error("Error al obtener vuelos:", error);

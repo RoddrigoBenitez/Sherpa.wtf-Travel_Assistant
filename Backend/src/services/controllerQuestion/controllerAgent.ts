@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import askAgent from "../../agents/travelAgent";
-
+import runGraph from "../../agents/orchestrator";
 class ControllerAgent {
     async askQuestion(req: Request, res: Response) {
         const question = req.body.question as string
@@ -8,7 +7,7 @@ class ControllerAgent {
             return res.status(400).json({ error: "La pregunta es obligatoria" });
         }
         try {
-            const response = await askAgent(question);
+            const response = await runGraph(question);
             res.json({ response });
         } catch (error) {
             console.error("Error en conversación:", error);

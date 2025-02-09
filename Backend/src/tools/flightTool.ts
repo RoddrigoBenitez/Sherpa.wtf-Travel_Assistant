@@ -4,7 +4,6 @@ import { flightService } from "../services/flightAPI/service";
 
 export const flightTool = tool(
   async ({ origin, maxPrice }: { origin: string; maxPrice?: string }) => {
-    console.log(`Consultando vuelos desde ${origin} con maxPrice ${maxPrice || "sin límite"}...`);
     const flightData = await flightService.searchFlightDestinations(origin, maxPrice);
 
     if (flightData.error) {
@@ -12,7 +11,6 @@ export const flightTool = tool(
       throw new Error(flightData.error || "No se encontraron ofertas de vuelos.");
     }
 
-    console.log("flightData recibida:", flightData);
 
     let result = `Ofertas de vuelos desde ${origin}:\n`;
 
@@ -28,7 +26,6 @@ export const flightTool = tool(
       result += "❌ No se encontraron destinos.";
     }
 
-    console.log("Resultado formateado:", result);
     return result;
   },
   {

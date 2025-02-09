@@ -17,7 +17,6 @@ class WeatherService {
             }
 
             const data = await response.json();
-            console.log("data service:", data);
 
             // extrae coordenadas
             const { coord, name } = data;
