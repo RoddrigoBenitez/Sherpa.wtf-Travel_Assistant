@@ -59,27 +59,6 @@ TAVILY_API_KEY=<Tu API Key de Tavily>
 ---
 
 
-## Requerimientos
-
-- **Node.js** (versión **18** o superior)
-- **npm**
-
----
-
-## Variables de Entorno
-
-Antes de ejecutar la aplicación, crea un archivo **.env** en la carpeta raíz del proyecto (o en `Sherpa.wtf-Travel_Assistant/Backend`) y define las siguientes variables:
-
-```env
-OPENWEATHER_API_URL=<URL de la API de OpenWeather>
-API_KEY=<Tu API Key de OpenWeather>
-OPENAI_API_KEY=<Tu API Key de OpenAI>
-AMADEUS_API_KEY=<Tu API Key de Amadeus>
-AMADEUS_API_SECRET=<Tu API Secret de Amadeus>
-TAVILY_API_KEY=<Tu API Key de Tavily>
-```
-
----
 
 Pasos para Probar:
 
@@ -118,11 +97,10 @@ Imagina que un cliente se acerca a Sherpa con la siguiente necesidad:
 El cliente, con urgencia, envía a través de Postman la siguiente consulta:
 
 json
-Copiar
-Editar
+
 ```json
 {
-  "question": "¿Dónde hacen el mejor café de Sudamérica?"
+  "question": "Me recomendarias donde hacen el mejor café de Sudamérica para viajar?"
 }
 ```
 Flujo Interno:
